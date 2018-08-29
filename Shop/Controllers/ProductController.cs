@@ -1,5 +1,4 @@
-﻿using Shop.Filters;
-using Shop.Models;
+﻿using Shop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,39 +7,99 @@ using System.Web.Mvc;
 
 namespace Shop.Controllers
 {
-    [Log]
-    //[Authorize]
     public class ProductController : Controller
     {
+        static List<Product> _products = new List<Product>
+        {
+            new Product {Id = 1, Name = "Myszka", Description = "Opis myszki", Price = 500},
+            new Product {Id = 2, Name = "Klawiatura", Description = "Opis klawiatury", Price = 600},
+            new Product {Id = 3, Name = "Słuchawki", Description = "Opis słuchawek", Price = 1500},
+            new Product {Id = 4, Name = "Monitor", Description = "Opis monitora", Price = 2500}
+        };
+
+
         // GET: Product
         public ActionResult Index()
         {
-            return Content ("Napis");
+            var model = _products;
+            return View();
         }
 
-        //[ActionName("Pokaz")]
-        //[HttpGet]
-        //[HttpPost]
-        //[Authorize(Roles="Admin")]
-        //[Log]
-        public ActionResult Display(int id)
+        // GET: Product/Details/5
+        public ActionResult Details(int id)
         {
+            var model = _products.FirstOrDefault(p => p.Id == id);
 
-            Product product = new Product();
-            product.Id = 1;
-            product.Name = "Książka ASP.NET MVC";
-            product.Description = "Znajdziemy tutaj bardzo dużo wiedzy!";
-            product.Price = 100;
+            if (model == null)
+                return RedirectToAction("Index");
 
-            if (product.Id == id)
-                return View("~/Views/Product/Index.cshtml",product);
-            if (id == 2)
-                return new HttpNotFoundResult("Komunikat do wy&#x15B;wietlenia.");
-            if (id == 3)
-                return RedirectToAction("About", "Home");
-            if (id == 4)
-                throw new Exception("Coś poszło nie tak");
-            return new EmptyResult();
+            return View(model);
+        }
+
+        // GET: Product/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Product/Create
+        [HttpPost]
+        public ActionResult Create(Product collection)
+        {
+            try
+            {
+                // TODO: Add insert logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Product/Edit/5
+        public ActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        // POST: Product/Edit/5
+        [HttpPost]
+        public ActionResult Edit(int id, Product collection)
+        {
+            try
+            {
+                // TODO: Add update logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Product/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: Product/Delete/5
+        [HttpPost]
+        public ActionResult Delete(int id, Product collection)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }
